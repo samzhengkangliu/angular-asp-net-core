@@ -1,17 +1,13 @@
-using System.Linq;
-using API.Errors;
+using API.Extensions;
 using API.Helpers;
 using API.Middleware;
 using AutoMapper;
-using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace API
 {
@@ -29,32 +25,15 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddDbContext<StoreContext>(option =>
                 option.UseSqlite(_config.GetConnectionString("DefaultConnection")));
-            // AddTransient - short lifetime; instantiated for an individual method and not the request itself
-            // AddSingleton - created when application starts and destroy until the application shotdown
-            // AddScoped - created when HTTP request comes in and create controller and repository; destroyed when 
-            // the request is finished
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+
             services.AddAutoMapper(typeof(MappingProfiles));
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = actionContext =>
-                {
-                    var errors = actionContext.ModelState
-                        .Where(e => e.Value.Errors.Count > 0)
-                        .SelectMany(x => x.Value.Errors)
-                        .Select(x => x.ErrorMessage).ToArray();
 
-                    var errorResponse = new ApiValidationErrorResponse
-                    {
-                        Errors = errors
-                    };
+            services.AddApplicationServices();
 
-                    return new BadRequestObjectResult(errorResponse);
-                };
-            });
+            services.AddSwaggerDocumentation();
 
         }
 
@@ -74,6 +53,8 @@ namespace API
             app.UseStaticFiles();
 
             app.UseAuthorization();
+
+            app.UseSwaggerDocumentation();
 
             app.UseEndpoints(endpoints =>
             {
