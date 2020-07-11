@@ -11,7 +11,7 @@ import { ShopParams } from '../shared/models/shopParams';
   styleUrls: ['./shop.component.scss'],
 })
 export class ShopComponent implements OnInit {
-  @ViewChild('search', {static: true}) searchTerm: ElementRef;
+  @ViewChild('search', { static: false }) searchTerm: ElementRef;
   products: IProduct[];
   brands: IBrand[];
   types: IType[];
@@ -32,19 +32,17 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts(): void {
-    this.shopService
-      .getProducts(this.shopParams)
-      .subscribe(
-        (response) => {
-          this.products = response.data;
-          this.shopParams.pageNumber = response.pageIndex;
-          this.shopParams.pageSize = response.pageSize;
-          this.totalCount = response.count;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    this.shopService.getProducts(this.shopParams).subscribe(
+      (response) => {
+        this.products = response.data;
+        this.shopParams.pageNumber = response.pageIndex;
+        this.shopParams.pageSize = response.pageSize;
+        this.totalCount = response.count;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   getBrands(): void {
