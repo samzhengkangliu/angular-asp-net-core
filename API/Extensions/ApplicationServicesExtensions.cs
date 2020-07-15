@@ -16,6 +16,7 @@ namespace API.Extensions
             // AddScoped - created when HTTP request comes in and create controller and repository; destroyed when 
             // the request is finished
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
             services.Configure<ApiBehaviorOptions>(options =>
             {
