@@ -11,6 +11,8 @@ import { IProduct } from '../shared/models/product';
 })
 export class BasketService {
   baseUrl = environment.apiUrl;
+  // BehaviorSubject is a type of subject, a subject is a special type of observable
+  // so you can subscribe to messages like any other observable
   private basketSource = new BehaviorSubject<IBasket>(null);
   basket$ = this.basketSource.asObservable();
 
