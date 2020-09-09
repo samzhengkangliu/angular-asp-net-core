@@ -13,6 +13,7 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
             // AddTransient - short lifetime; instantiated for an individual method and not the request itself
             // AddSingleton - created when application starts and destroy until the application shotdown
             // AddScoped - created when HTTP request comes in and create controller and repository; destroyed when 
