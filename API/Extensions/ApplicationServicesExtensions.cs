@@ -14,6 +14,7 @@ namespace API.Extensions
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             // AddTransient - short lifetime; instantiated for an individual method and not the request itself
             // AddSingleton - created when application starts and destroy until the application shotdown
