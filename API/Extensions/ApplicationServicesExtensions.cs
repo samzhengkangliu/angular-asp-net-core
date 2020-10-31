@@ -12,14 +12,17 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddSingleton<IResponseCacheService, ResponsecacheService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            // AddTransient - short lifetime; instantiated for an individual method and not the request itself
-            // AddSingleton - created when application starts and destroy until the application shotdown
-            // AddScoped - created when HTTP request comes in and create controller and repository; destroyed when 
-            // the request is finished
+            /**
+            // * AddTransient - short lifetime; instantiated for an individual method and not the request itself
+            // * AddSingleton - created when application starts and destroy until the application shotdown
+            // * AddScoped - created when HTTP request comes in and create controller and repository; destroyed when 
+            // * the request is finished
+            **/
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
