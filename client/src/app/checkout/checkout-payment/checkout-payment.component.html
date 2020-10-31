@@ -3,7 +3,7 @@
     <div class="form-group col-12" formGroupName="paymentForm">
       <app-text-input
         [label]="'Name on card'"
-        formControlName="nameOfCard"
+        formControlName="nameOnCard"
       ></app-text-input>
     </div>
     <div class="form-group col-6">
@@ -29,7 +29,13 @@
   <button
     class="btn btn-outline-primary"
     (click)="submitOrder()"
-    [disabled]="loading"
+    [disabled]="
+      loading ||
+      checkoutForm.get('paymentForm').invalid ||
+      !cardNumberValid ||
+      !cardExpiryValid ||
+      !cardCvcValid
+    "
   >
     Submit Order <i class="fa fa-angle-right"></i>
     <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
