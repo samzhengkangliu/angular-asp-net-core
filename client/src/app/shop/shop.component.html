@@ -7,7 +7,11 @@
           class="custom-select mb-4"
           (change)="onSortSelected($event.target.value)"
         >
-          <option *ngFor="let sort of sortOptions" [value]="sort.value">
+          <option
+            *ngFor="let sort of sortOptions"
+            [value]="sort.value"
+            [selected]="shopParams.sort === sort.value"
+          >
             {{ sort.name }}
           </option>
         </select>
@@ -52,7 +56,7 @@
           <input
             class="form-control mr-2"
             #search
-            style="width: 300px;"
+            style="width: 300px"
             placeholder="Search"
             type="text"
             (keyup.enter)="onSearch()"
@@ -77,6 +81,7 @@
       >
         <app-pager
           [pageSize]="shopParams.pageSize"
+          [pageNumber]="shopParams.pageNumber"
           [totalCount]="totalCount"
           (pageChanged)="onPageChanged($event)"
         ></app-pager>
